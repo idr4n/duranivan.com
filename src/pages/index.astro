@@ -1,0 +1,417 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Ivan Duran">
+  <main class="page">
+    <!-- Accent decorations -->
+    <div class="accent-block" aria-hidden="true"></div>
+    <div class="accent-vert" aria-hidden="true"></div>
+    <div class="accent-horiz" aria-hidden="true"></div>
+    <div class="side-accent" aria-hidden="true"></div>
+
+    <div class="content">
+      <!-- Header -->
+      <header class="header">
+        <span class="header-left">duranivan.com</span>
+      </header>
+
+      <div class="spacer-80"></div>
+
+      <!-- Name -->
+      <section class="name-section">
+        <h1>
+          <span class="name-line">IVAN</span>
+          <span class="name-line">DURAN</span>
+        </h1>
+      </section>
+
+      <div class="spacer-32"></div>
+      <hr class="separator" />
+      <div class="spacer-32"></div>
+
+      <!-- Taglines -->
+      <section class="tagline-section">
+        <p class="tagline-primary">assistant professor of economics</p>
+        <p class="tagline-secondary">exploring ideas through data and code.</p>
+      </section>
+
+      <div class="spacer-40"></div>
+
+      <!-- Links -->
+      <section class="links-section">
+        <p class="link-line">
+          github &nbsp;───
+          <a href="https://github.com/idr4n" target="_blank" rel="noopener"
+            >idr4n</a
+          >
+          ·
+          <a href="https://github.com/i-duran" target="_blank" rel="noopener"
+            >i-duran</a
+          >
+        </p>
+        <p class="link-line">
+          email &nbsp;&nbsp;─── idr4nd [at] gmail · idiaz [at] psu.edu.sa
+        </p>
+      </section>
+
+      <div class="spacer-40"></div>
+      <hr class="separator" />
+      <div class="spacer-32"></div>
+
+      <!-- Coming Soon -->
+      <section class="coming-soon">
+        <p class="coming-label">COMING SOON</p>
+        <ul class="tree-list">
+          <li class="tree-item">├── projects</li>
+          <li class="tree-item">├── courses</li>
+          <li class="tree-item">└── blog</li>
+        </ul>
+      </section>
+
+      <!-- Footer spacer -->
+      <div class="flex-spacer"></div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p class="footer-copy">© 2026 ivan duran</p>
+        <div class="theme-toggle" aria-label="Theme preference">
+          <button class="theme-btn" data-theme-value="light">light</button>
+          <span class="theme-sep">/</span>
+          <button class="theme-btn" data-theme-value="dark">dark</button>
+          <span class="theme-sep">/</span>
+          <button class="theme-btn" data-theme-value="system">system</button>
+        </div>
+        <span class="coord-label" aria-hidden="true"
+          >24.7136° N, 46.6753° E</span
+        >
+      </footer>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  function updateToggleUI(activeValue: string) {
+    document
+      .querySelectorAll<HTMLButtonElement>('.theme-btn')
+      .forEach((btn) => {
+        const isActive = btn.dataset.themeValue === activeValue;
+        btn.classList.toggle('active', isActive);
+      });
+  }
+
+  function applyTheme(value: string) {
+    let resolved: string;
+    if (value === 'dark' || value === 'light') {
+      resolved = value;
+    } else {
+      resolved = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', resolved);
+  }
+
+  function getStoredPreference(): string {
+    try {
+      return localStorage.getItem('theme') || 'dark';
+    } catch {
+      return 'dark';
+    }
+  }
+
+  // Initialize
+  const current = getStoredPreference();
+  updateToggleUI(current);
+  applyTheme(current);
+
+  // Toggle clicks
+  document.querySelectorAll<HTMLButtonElement>('.theme-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.themeValue!;
+      try {
+        localStorage.setItem('theme', value);
+      } catch {
+        // storage unavailable
+      }
+      applyTheme(value);
+      updateToggleUI(value);
+    });
+  });
+
+  // Listen for system preference changes (when in "system" mode)
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', () => {
+      if (getStoredPreference() === 'system') {
+        applyTheme('system');
+      }
+    });
+</script>
+
+<style>
+  .page {
+    position: relative;
+    min-height: 100vh;
+    max-width: 1440px;
+    padding: 80px 120px 60px;
+    overflow: hidden;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 140px);
+  }
+
+  /* Spacers */
+  .spacer-80 {
+    height: 80px;
+  }
+  .spacer-40 {
+    height: 40px;
+  }
+  .spacer-32 {
+    height: 32px;
+  }
+  .flex-spacer {
+    flex: 1;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-left {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+  }
+
+  /* Name */
+  .name-section h1 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name-line {
+    font-size: 72px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  /* Separator */
+  .separator {
+    border: none;
+    height: 1px;
+    width: 280px;
+    background-color: var(--border);
+  }
+
+  /* Taglines */
+  .tagline-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tagline-primary {
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    color: var(--text-primary);
+  }
+
+  .tagline-secondary {
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    color: var(--text-secondary);
+  }
+
+  /* Links */
+  .links-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .link-line {
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    color: var(--text-primary);
+  }
+
+  .link-line a:hover {
+    color: var(--accent);
+  }
+
+  /* Coming Soon */
+  .coming-soon {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .coming-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .tree-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tree-item {
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    color: var(--text-secondary);
+  }
+
+  /* Footer */
+  .footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .theme-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    opacity: 0.5;
+    padding: 0;
+    transition: opacity 0.15s;
+  }
+
+  .theme-btn.active {
+    color: var(--text-primary);
+    opacity: 1;
+  }
+
+  .theme-btn:not(.active):hover {
+    opacity: 0.8;
+  }
+
+  .theme-sep {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.3;
+  }
+
+  /* Accent decorations */
+  .accent-block {
+    position: absolute;
+    top: 96px;
+    right: 112px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--accent);
+  }
+
+  .accent-vert {
+    position: absolute;
+    top: 112px;
+    right: 117px;
+    width: 1px;
+    height: 80px;
+    background-color: var(--accent);
+    opacity: 0.25;
+  }
+
+  .accent-horiz {
+    position: absolute;
+    top: 102px;
+    right: 32px;
+    width: 80px;
+    height: 1px;
+    background-color: var(--accent);
+    opacity: 0.25;
+  }
+
+  .side-accent {
+    position: absolute;
+    top: 177px;
+    left: 100px;
+    width: 3px;
+    height: 188px;
+    background-color: var(--accent);
+    opacity: 0.15;
+  }
+
+  .coord-label {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    opacity: 0.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page {
+      padding: 40px 24px 40px;
+    }
+
+    .content {
+      min-height: calc(100vh - 80px);
+    }
+
+    .spacer-80 {
+      height: 40px;
+    }
+    .spacer-40 {
+      height: 24px;
+    }
+    .spacer-32 {
+      height: 20px;
+    }
+
+    .name-line {
+      font-size: 48px;
+    }
+
+    .separator {
+      width: 200px;
+    }
+
+    .accent-block,
+    .accent-vert,
+    .accent-horiz,
+    .side-accent {
+      display: none;
+    }
+
+    .footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+</style>
