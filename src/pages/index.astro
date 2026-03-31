@@ -8,7 +8,6 @@ import Layout from '../layouts/Layout.astro';
     <div class="accent-block" aria-hidden="true"></div>
     <div class="accent-vert" aria-hidden="true"></div>
     <div class="accent-horiz" aria-hidden="true"></div>
-    <div class="side-accent" aria-hidden="true"></div>
 
     <div class="content">
       <!-- Header -->
@@ -198,13 +197,29 @@ import Layout from '../layouts/Layout.astro';
   .name-section h1 {
     display: flex;
     flex-direction: column;
+    width: fit-content;
+  }
+
+  .name-section {
+    position: relative;
+  }
+
+  .name-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20px;
+    width: 3px;
+    height: 100%;
+    background-color: var(--accent);
+    opacity: 0.15;
   }
 
   .name-line {
     font-size: 72px;
     font-weight: 700;
     letter-spacing: -1px;
-    line-height: 1;
+    line-height: 1.305555556;
     color: var(--text-primary);
   }
 
@@ -358,16 +373,6 @@ import Layout from '../layouts/Layout.astro';
     opacity: 0.25;
   }
 
-  .side-accent {
-    position: absolute;
-    top: 177px;
-    left: 100px;
-    width: 3px;
-    height: 188px;
-    background-color: var(--accent);
-    opacity: 0.15;
-  }
-
   .coord-label {
     font-size: 10px;
     letter-spacing: 0.5px;
@@ -405,8 +410,11 @@ import Layout from '../layouts/Layout.astro';
 
     .accent-block,
     .accent-vert,
-    .accent-horiz,
-    .side-accent {
+    .accent-horiz {
+      display: none;
+    }
+
+    .name-section::before {
       display: none;
     }
 
