@@ -113,9 +113,13 @@ import Layout from '../layouts/Layout.astro';
 
   function getStoredPreference(): string {
     try {
-      return localStorage.getItem('theme') || 'dark';
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark' || stored === 'light' || stored === 'system') {
+        return stored;
+      }
+      return 'system';
     } catch {
-      return 'dark';
+      return 'system';
     }
   }
 

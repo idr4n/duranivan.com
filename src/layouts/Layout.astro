@@ -48,12 +48,11 @@ const {
         var theme;
         if (stored === 'dark' || stored === 'light') {
           theme = stored;
-        } else if (stored === 'system') {
+        } else {
+          // 'system', null, or any invalid value → follow OS preference
           theme = window.matchMedia('(prefers-color-scheme: dark)').matches
             ? 'dark'
             : 'light';
-        } else {
-          theme = 'dark';
         }
         document.documentElement.setAttribute('data-theme', theme);
       })();
